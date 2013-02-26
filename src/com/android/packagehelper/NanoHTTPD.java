@@ -1,3 +1,4 @@
+package com.android.packagehelper;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
