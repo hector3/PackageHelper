@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Properties;
 
@@ -95,7 +96,7 @@ public class WebService extends Service {
 				json.put("label", packageInfo.applicationInfo.loadLabel(mPackageManager).toString());
 				rootJson.put(json);
 			}
-			return mHttpd.new Response(NanoHTTPD.HTTP_OK, "text/json", rootJson.toString(2));
+			return mHttpd.new Response(NanoHTTPD.HTTP_OK, "text/json", rootJson.toString(1));
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
@@ -103,7 +104,27 @@ public class WebService extends Service {
 	}
 
 	protected Response getHome() {
-		// TODO
+		InputStream is = null;
+		try {
+			is = getAssets().open("home.html");
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			int oneByte;
+			while ((oneByte = is.read()) != -1) {
+				baos.write(oneByte);
+			}
+			return mHttpd.new Response(NanoHTTPD.HTTP_OK, NanoHTTPD.MIME_HTML, new ByteArrayInputStream(
+					baos.toByteArray()));
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (is != null) {
+				try {
+					is.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
 		return null;
 	}
 

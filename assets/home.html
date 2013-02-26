@@ -1,0 +1,42 @@
+<!DOCTYPE html >
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Package Helper Home</title>
+<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+</head>
+<body>
+  <h3>How to use Package Helper API</h3>
+  <p>
+    1. Install PackageHelper.apk : <br /> &gt; adb install PackageHelper.apk <br /> Source Code:
+    <a href="https://github.com/zzhouj/PackageHelper" target="_blank">https://github.com/zzhouj/PackageHelper</a>
+  </p>
+  <p>
+    2. Start web service of PackageHelper: <br /> &gt; adb shell "am startservice -n
+    com.android.packagehelper/.WebService"
+  </p>
+  <p>
+    3. Forword web service tcp port to local: <br /> &gt; adb forward tcp:8787 tcp:8787
+  </p>
+  <p>
+    4. Access web service of PackageHelper: <br />
+  <ul>
+    <li>
+      Home (this page):
+      <a href="http://localhost:8787/" target="_blank">http://localhost:8787/</a>
+    </li>
+    <li>
+      Package infos (JSON array):
+      <a href="http://localhost:8787/list" target="_blank">http://localhost:8787/list</a>
+    </li>
+    <li>
+      Package icon (PNG):
+      <a href="http://localhost:8787/icon?p=com.android.mms" target="_blank">http://localhost:8787/icon?p=com.android.mms</a>
+    </li>
+  </ul>
+  </p>
+  <p>
+    A. Uninstall PackageHelper.apk: <br /> &gt; adb uninstall com.android.packagehelper
+  </p>
+</body>
+</html>
