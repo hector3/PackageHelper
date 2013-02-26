@@ -2,6 +2,7 @@ package com.android.packagehelper;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Properties;
@@ -89,8 +90,8 @@ public class WebService extends Service {
 				json.put("versionCode", packageInfo.versionCode);
 				json.put("versionName", packageInfo.versionName);
 				json.put("uid", packageInfo.applicationInfo.uid);
-				json.put("publicSourceDir", packageInfo.applicationInfo.publicSourceDir);
-				json.put("sourceDir", packageInfo.applicationInfo.sourceDir);
+				json.put("filePath", packageInfo.applicationInfo.sourceDir);
+				json.put("fileSize", new File(packageInfo.applicationInfo.sourceDir).length());
 				json.put("label", packageInfo.applicationInfo.loadLabel(mPackageManager).toString());
 				rootJson.put(json);
 			}
