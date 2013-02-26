@@ -1,5 +1,7 @@
 package com.android.packagehelper;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.Properties;
@@ -10,8 +12,14 @@ import org.json.JSONObject;
 
 import android.app.Service;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.CompressFormat;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -52,8 +60,22 @@ public class WebService extends Service {
 		}
 	}
 
-	protected Response getIcon(String property) {
-		// TODO
+	protected Response getIcon(String packageName) {
+		Log.d(TAG, "getIcon: " + packageName);
+		try {
+			ApplicationInfo applicationInfo = mPackageManager.getApplicationInfo(packageName, 0);
+			Drawable drawable = applicationInfo.loadIcon(mPackageManager);
+			if (drawable instanceof BitmapDrawable) {
+				Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
+				ByteArrayOutputStream baos = new ByteArrayOutputStream();
+				if (bitmap != null && bitmap.compress(CompressFormat.PNG, 0, baos)) {
+					return mHttpd.new Response(NanoHTTPD.HTTP_OK, "image/png", new ByteArrayInputStream(
+							baos.toByteArray()));
+				}
+			}
+		} catch (NameNotFoundException e) {
+			e.printStackTrace();
+		}
 		return null;
 	}
 
